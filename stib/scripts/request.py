@@ -26,21 +26,25 @@ def regenerate_token():
 	payload = {
 		'grant_type' : 'client_credentials' 
 	}
-	headers = {'Authorization': 'Basic %s'%(keysecret64)}
+	headers = {'Authorization': 'Basic {0}'.format(str(keysecret64,'utf-8'))}
 	r = requests.post(url, data=payload, headers=headers)
 	if r.status_code == 200:
 		return r.json()["access_token"]
 
 
-url = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/PassingTimeByPoint/8101'
-token = regenerate_token()
-headers = {'Accept': 'application/json', 'Authorization': 'Bearer %s'%token}
-# r = requests.post(url, data=payload, headers=headers)
-r = requests.get(url, headers=headers)
-if r.status_code == 200	:
-	for p in r.json()["points"]:
-		for t in p["passingTimes"] :
-			d = t["expectedArrivalTime"] #
-			date_time_obj = datetime.strptime(d, '%Y-%m-%dT%H:%M:%S+01:00')
-			diff = date_time_obj- datetime.now()
-			print diff.seconds / 60
+
+r = requests.get("http://localhost:80")
+print r.content
+
+# url = 'https://opendata-api.stib-mivb.be/OperationMonitoring/4.0/PassingTimeByPoint/8101'
+# # token = regenerate_token()
+# headers = {'Accept': 'application/json', 'Authorization': 'Bearer %s'%token}
+
+# # r = requests.post(url, data=payload, headers=headers)
+# if r.status_code == 200	:
+# 	for p in r.json()["points"]:
+# 		for t in p["passingTimes"] :
+# 			d = t["expectedArrivalTime"] #
+# 			date_time_obj = datetime.strptime(d, '%Y-%m-%dT%H:%M:%S+01:00')
+# 			diff = date_time_obj- datetime.now()
+# 			print diff.seconds / 60

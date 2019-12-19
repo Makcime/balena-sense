@@ -13,6 +13,7 @@ class stibMivb():
     def __init__(self):
         self.token = self.regenerate_token()
         self.retry = 0
+        self.status_code = 200
 
     def regenerate_token(self):
         key = "xbBJvXN10rIiYjYJEg6E0lG9xu0a"
@@ -23,7 +24,8 @@ class stibMivb():
         payload = {
             'grant_type' : 'client_credentials' 
         }
-        headers = {'Authorization': 'Basic %s'%(keysecret64)}
+        headers = {'Authorization': 'Basic {0}'.format(str(keysecret64,'utf-8'))}
+
         r = requests.post(url, data=payload, headers=headers)
         if r.status_code == 200:
             return r.json()["access_token"]
@@ -38,7 +40,7 @@ class stibMivb():
         r = requests.get(url, headers=headers)
         if r.status_code != 200:
             self.token = self.regenerate_token()
-            l = [0, 0]
+            l = [-1, -1]
         else :
             for p in r.json()["points"]:
                 for t in p["passingTimes"] :
@@ -51,6 +53,7 @@ class stibMivb():
             {
                 'measurement': 'stib-mvib',
                 'fields': {
+                    'status_code' : r.status_code,
                     'waiting_A': l[0],
                     'waiting_B': l[1]
                 }
@@ -59,14 +62,14 @@ class stibMivb():
 
 
 class stibMivbHTTP(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
+    def _set_headers(self, status_code=200):
+        self.send_response(status_code)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
     def do_GET(self):
-        self._set_headers()
         waiting_times = stib.get_waiting_time()
+        self._set_headers(waiting_times[0]['fields']['status_code'])
         self.wfile.write(json.dumps(waiting_times[0]['fields']).encode('UTF-8'))
 
     def do_HEAD(self):
