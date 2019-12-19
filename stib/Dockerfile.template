@@ -1,0 +1,18 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-build
+
+ARG BSEC_FILENAME=BSEC_1.4.7.4_Generic_Release.zip
+
+RUN install_packages \
+        unzip
+
+# Upgrade pip
+RUN pip install -U pip
+RUN pip install requests datetime
+
+
+WORKDIR /usr/src/app
+COPY ./scripts ./scripts
+COPY ./entry.sh /usr/src/app/
+RUN chmod +x /usr/src/app/entry.sh
+
+CMD ["./entry.sh"]

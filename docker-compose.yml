@@ -24,6 +24,10 @@ services:
     restart: always
     volumes:
       - 'sense-data:/data'
+  stib:
+    build: ./stib
+    privileged: true
+    restart: always
   telegraf:
     build: ./telegraf
     restart: always
