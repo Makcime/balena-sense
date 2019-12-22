@@ -27,7 +27,7 @@ else
   sed -i '/MQTTOutput/,/EndMQTTOutput/ { s/^##*//; s/^ MQTTOutput$/# MQTTOutput/; s/^ EndMQTTOutput/# EndMQTTOutput/ }' /etc/telegraf/telegraf.conf
 fi
 
-if [[ -z $TELEGRAF_MQTT_URL_PORT_IN ]]; 
+if [[ -z $TELEGRAF_MQTT_URL_PORT_IN ]]; then
   echo 'No Telegraf MQTT URL:Port input specified - Telegraf MQTT input disabled'
   sed -i '/MQTTInput/,/EndMQTTInput/ s/^#*/#/' /etc/telegraf/telegraf.conf
 elif [[ $TELEGRAF_MQTT_URL_PORT_IN == "INTERNAL" ]]; then
