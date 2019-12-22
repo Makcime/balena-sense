@@ -27,16 +27,16 @@ else
   sed -i '/MQTTOutput/,/EndMQTTOutput/ { s/^##*//; s/^ MQTTOutput$/# MQTTOutput/; s/^ EndMQTTOutput/# EndMQTTOutput/ }' /etc/telegraf/telegraf.conf
 fi
 
-if [[ -z $TELEGRAF_MQTT_URL_PORT_IN ]]; then
+if [[ -z $TELEGRAF_MQTT_URL_PORT_IN ]]; 
   echo 'No Telegraf MQTT URL:Port input specified - Telegraf MQTT input disabled'
   sed -i '/MQTTInput/,/EndMQTTInput/ s/^#*/#/' /etc/telegraf/telegraf.conf
 elif [[ $TELEGRAF_MQTT_URL_PORT_IN == "INTERNAL" ]]; then
   TELEGRAF_MQTT_URL_PORT_IN="mqtt:1883"
   echo 'Internal MQTT server specified for Telegraf - enabling MQTT output to '$TELEGRAF_MQTT_URL_PORT_IN
-  sed -i '/MQTTinput/,/EndMQTTinput/ { s/^##*//; s/^ MQTTinput$/# MQTTinput/; s/^ EndMQTTinput/# EndMQTTinput/ }' /etc/telegraf/telegraf.conf
+  sed -i '/MQTTInput/,/EndMQTTInput/ { s/^##*//; s/^ MQTTInput$/# MQTTInput/; s/^ EndMQTTInput/# EndMQTTInput/ }' /etc/telegraf/telegraf.conf
 else
   echo 'External MQTT server specified for Telegraf - enabling MQTT output to '$TELEGRAF_MQTT_URL_PORT_IN
-  sed -i '/MQTTinput/,/EndMQTTinput/ { s/^##*//; s/^ MQTTinput$/# MQTTinput/; s/^ EndMQTTinput/# EndMQTTinput/ }' /etc/telegraf/telegraf.conf
+  sed -i '/MQTTInput/,/EndMQTTInput/ { s/^##*//; s/^ MQTTInput$/# MQTTInput/; s/^ EndMQTTInput/# EndMQTTInput/ }' /etc/telegraf/telegraf.conf
 fi
 
 if [[ $DISABLE_INTERNAL_INFLUXDB == "TRUE" ]]; then
