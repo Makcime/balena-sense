@@ -39,7 +39,6 @@ else
   sed -i '/MQTTinput/,/EndMQTTinput/ { s/^##*//; s/^ MQTTinput$/# MQTTinput/; s/^ EndMQTTinput/# EndMQTTinput/ }' /etc/telegraf/telegraf.conf
 fi
 
-
 if [[ $DISABLE_INTERNAL_INFLUXDB == "TRUE" ]]; then
   echo 'Internal InfluxDB disabled'
   sed -i '/InternalInfluxDB/,/EndInternalInfluxDB/ s/^#*/#/' /etc/telegraf/telegraf.conf
